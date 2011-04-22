@@ -1,0 +1,10 @@
+You are given three text files named mon.txt, tue.txt and wed.txt. Each file
+contains 1 URL per line, something like
+
+http://www.foofoofoo.com?embedCode=abc?foo=bar...
+http://www.foofoofoo.com
+http://www.foofoofoo.com?foo=bar2&embedCode=uwk?blah=blah
+
+Write a program to extract the value for embedCode and report unique values.
+You can assume the size of each file to be 100M and we have enough memory. You
+have 12 minutes to finish this code.

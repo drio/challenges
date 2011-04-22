@@ -20,7 +20,6 @@ class UrlStuff {
           m = regex.matcher(l);
           if (m.find()) {
             h.put(m.group(1), null);
-            System.out.println(m.group(1));
           }
         } 
         br.close();
@@ -32,7 +31,7 @@ class UrlStuff {
 
     // Print results
     for (Iterator it = h.keySet().iterator(); it.hasNext();) {
-      Object key = it.next();
+      System.out.println(it.next());
     }
 
     System.exit(0);

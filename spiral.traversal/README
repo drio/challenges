@@ -1,7 +1,7 @@
 Given an  M * N array, traverse the array in a spiral fashion. For example, for a 4 x 5 array, 
 
-1   2   3   4   5
-14 15 16 17  6
-13 20 19 18  7
-12 11 10  9   8
+1  2  3  4  5
+14 15 16 17 6
+13 20 19 18 7
+12 11 10  9 8
 

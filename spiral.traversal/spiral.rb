@@ -83,7 +83,7 @@ class StateMachine
     o == "+" ? @cc[:c] + 1 < @ncols : @cc[:c] - 1 < @ncols
   end
 
-  def still_rows?(0)
+  def still_rows?(o)
     o == "+" ? @cc[:r] + 1 < @nrows : @cc[:r] - 1 < @nrows
   end
 

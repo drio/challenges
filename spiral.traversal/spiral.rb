@@ -1,20 +1,29 @@
 #!/usr/bin/env ruby
 #
 class StateMachine
+  DEBUG = false
   def initialize(matrix)
     @m  = matrix               # matrix
     @cs = "start"              # current state: start, right, down, left, up, done
     @ap = []                   # already processed
     @cc = { :r => 0, :c => 0 } # current coordinate
-    @nrows = @m.size-1; @ncols = @m.size-1
+    @nrows = @m.size; @ncols = @m[0].size
   end
 
-  def move(current)
-    @ap << current_value
-    print unless @cs == "done"
-    case cs
-      when "start"
-      when "right"
+  def move
+    return false if @nrows == 0 && @ncols == 0
+    @ap << cvalue
+    unless @cs == "done"
+      if DEBUG 
+        printf "%s r:%s c:%s state:%s nr:%s nc:%s\n", 
+          cvalue, @cc[:r], @cc[:c], @cs, @nrows, @ncols
+      else 
+        printf "%s ", cvalue
+      end
+    end 
+
+    case @cs
+      when /start|right/
         if right?
           @cc[:c] += 1; @cs = "right"
         elsif down?
@@ -40,12 +49,12 @@ class StateMachine
         if up?
           @cc[:r] -= 1
         elsif right?
-          @cc[c] += 1; @cs = "right"
+          @cc[:c] += 1; @cs = "right"
         else
           @cs = "done"
         end
       when "done"
-        return false
+        puts ""; return false
       else
         raise "We should not be here"
     end
@@ -53,29 +62,23 @@ class StateMachine
   end
 
   private
-  def print
-    printf "%s ", current_value
-  end
-
-  # I can move to the right if there are more columns
-  # and I have not processed the element in the next position
   def right?
-    in_already = still_columns("+") ? @ap.include?(@m[@cc[:r]][@cc[:c]+1]) : false
+    in_already = still_columns?("+") ? include?(0,1) : false
     still_columns?("+") && !in_already
   end
 
   def down?
-    in_already = still_rows("+") ? @ap.include?(@m[@cc[:r]+1][@cc[:c]]) : false
+    in_already = still_rows?("+") ? include?(1,0) : false
     still_rows?("+") && !in_already
   end
 
   def left?
-    in_already = still_columns("-") ? @ap.include?(@m[@cc[:r]][@cc[:c]-1]) : false
+    in_already = still_columns?("-") ? include?(0,-1) : false
     still_columns?("-") && !in_already
   end
 
   def up?
-    in_already = still_rows("-") ? @ap.include?(@m[@cc[:r]-1][@cc[:c]]) : false
+    in_already = still_rows?("-") ? include?(-1,0) : false
     still_rows?("-") && !in_already
   end
 
@@ -87,14 +90,49 @@ class StateMachine
     o == "+" ? @cc[:r] + 1 < @nrows : @cc[:r] - 1 < @nrows
   end
 
-  def current_value
+  def cvalue # current_value
     @m[@cc[:r]][@cc[:c]]
+  end
+
+  def include?(r,c)
+    @ap.include?(@m[@cc[:r]+r][@cc[:c]+c])
   end
 end
 
+#
+# MAIN
 m = []
-m << [1 , 2, 3 ]
-m << [10, 11, 12 ]
-m << [9, 8, 7 ]
 
+#m = [[]]
+
+#m << [1]
+
+#m << [1, 2]
+
+#m << [1 , 2 ]
+#m << [4, 3 ]
+
+#m << [1 , 2, 3 ]
+#m << [8, 9, 4 ]
+#m << [7, 6, 5 ]
+
+#m << [1 , 2, 3, 4 ]
+#m << [8 , 7, 6, 5 ]
+
+#m << [1 ,2]
+#m << [6 ,3]
+#m << [5 ,4]
+
+#m << [1 , 2, 3, 4 ]
+#m << [10 , 11, 12, 5 ]
+#m << [9 , 8, 7, 6 ]
+#
+
+#m << [1  , 2 , 3 , 4 ]
+#m << [12 , 13, 14, 5 ]
+#m << [11 , 16, 15, 6 ]
+#m << [10 , 9 , 8 , 7 ]
+
+sm = StateMachine.new(m)
+while sm.move; end
 
